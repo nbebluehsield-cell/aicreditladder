@@ -6,6 +6,7 @@ import { Header } from "@/components/Header";
 import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
 import { ConsentBanner } from "@/components/ads/ConsentBanner";
 import { AdSenseScript } from "@/components/ads/AdSenseScript";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { SITE_URL } from "@/lib/site-url";
 
 /** High-intent phrases for search + AI retrieval (keep concise). */
@@ -140,6 +141,7 @@ export default function RootLayout({
           {children}
         </main>
         <ConsentBanner />
+        <GoogleAnalytics />
         <AdSenseScript />
       </body>
     </html>

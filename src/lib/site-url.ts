@@ -1,4 +1,5 @@
-const DEFAULT_PUBLIC_SITE = "https://aicreditladder.com";
+/** Canonical prod (www); must stay `.com` — never `.co`. */
+const DEFAULT_PUBLIC_SITE = "https://www.aicreditladder.com";
 
 function stripTrailingSlash(origin: string): string {
   return origin.replace(/\/$/, "");

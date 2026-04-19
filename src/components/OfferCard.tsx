@@ -7,6 +7,7 @@ import { formatAmount } from "@/lib/formatAmount";
 import { freshness } from "@/lib/freshness";
 import { GA_EVENTS } from "@/lib/analytics-events";
 import { trackGaEvent } from "@/lib/gtag";
+import { Button } from "@/components/ui/Button";
 
 /** Hex logo 48px + gap-4 (16px) — aligns stacked value row with title on mobile */
 const MOBILE_VALUE_INDENT = "max-sm:pl-[64px]";
@@ -129,23 +130,29 @@ export function OfferCard({
               </p>
             )}
           </div>
-          <a
-            href={applyUrl}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            aria-label={`Apply to ${offer.vendor} at the source`}
-            className="
-              pointer-events-auto relative z-20 shrink-0 inline-flex items-center gap-1
-              rounded-full border border-[color:var(--gold)]/50
-              bg-[color:var(--gold-soft)]
-              px-3.5 py-2
-              text-[12px] font-medium text-[color:var(--gold-bright)]
-              transition hover:bg-[color:var(--gold)] hover:text-black
-              focus-ring
-            "
+          <Button
+            variant="default"
+            size="xs"
+            asChild
+            className="pointer-events-auto relative z-20 mono uppercase"
           >
-            Claim <span aria-hidden>↗</span>
-          </a>
+            <a
+              href={applyUrl}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              aria-label={`Apply to ${offer.vendor} at the source`}
+              onClick={() =>
+                trackGaEvent(GA_EVENTS.OFFER_APPLY_OUTBOUND, {
+                  offer_slug: offer.slug,
+                  vendor: offer.vendor,
+                  offer_title: offer.title,
+                  surface: "offer_card",
+                })
+              }
+            >
+              Claim <span aria-hidden>↗</span>
+            </a>
+          </Button>
         </div>
       </div>
     </div>

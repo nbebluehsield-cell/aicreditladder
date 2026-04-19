@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { signOut } from "@/app/actions/auth";
 import { cn } from "@/lib/cn";
 import { HomeLogo } from "./HomeLogo";
+import { Button } from "@/components/ui/Button";
 
 type NavItem = { href: string; label: string };
 
@@ -84,9 +85,9 @@ export function HeaderAuth({
           href="/admin"
           prefetch
           className={cn(
-            "focus-ring inline-flex min-h-11 items-center rounded-md px-2.5 py-2 text-[12px] font-medium text-[color:var(--gold)] transition hover:bg-[color:var(--gold-soft)] sm:min-h-9 sm:px-3 sm:text-[13px]",
+            "editorial-link focus-ring inline-flex min-h-11 items-center rounded-md px-2 py-2 text-[12px] font-medium text-[color:var(--gold)] sm:min-h-9 sm:px-2 sm:text-[13px]",
             pathname.startsWith("/admin") &&
-              "underline decoration-[color:var(--gold)] underline-offset-4",
+              "underline decoration-[color:var(--gold)] underline-offset-[5px]",
           )}
         >
           Admin
@@ -102,20 +103,23 @@ export function HeaderAuth({
         <form action={signOut} className="inline-flex">
           <button
             type="submit"
-            className="mono focus-ring min-h-11 rounded-lg border border-[color:var(--rule-2)] bg-[color:var(--surface)]/40 px-3 py-2 text-[10.5px] uppercase tracking-[0.16em] text-[color:var(--muted)] transition hover:border-[color:var(--rule-3)] hover:text-[color:var(--foreground)] sm:min-h-9 sm:text-[11px]"
+            className="editorial-link focus-ring min-h-11 border-0 bg-transparent px-1 py-2 text-[13px] font-medium text-[color:var(--foreground-dim)] transition hover:text-[color:var(--foreground)] sm:min-h-9"
             title={userEmail}
           >
             Sign out
           </button>
         </form>
       ) : (
-        <Link
-          href="/auth/login"
-          prefetch
-          className="mono focus-ring inline-flex min-h-[44px] min-w-[5.5rem] items-center justify-center rounded-lg border border-[color:var(--gold)] bg-[color:var(--gold)]/12 px-4 py-2 text-[10.5px] uppercase tracking-[0.15em] text-[color:var(--gold)] transition hover:bg-[color:var(--gold)] hover:text-[color:var(--background)] sm:min-h-9 sm:min-w-0 sm:px-4 sm:text-[11px] sm:tracking-[0.18em]"
+        <Button
+          variant="outline"
+          size="sm"
+          asChild
+          className="mono min-h-11 uppercase tracking-[0.1em] sm:min-h-9"
         >
-          Sign in
-        </Link>
+          <Link href="/auth/login" prefetch>
+            Sign in
+          </Link>
+        </Button>
       )}
     </div>
   );

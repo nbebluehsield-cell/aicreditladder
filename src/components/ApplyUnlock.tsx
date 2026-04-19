@@ -47,18 +47,25 @@ export function ApplyUnlock({
   if (authed) {
     return (
       <Button
-        href={applyUrl}
-        size="md"
-        className="w-full min-h-12 text-[12.5px] sm:min-h-11"
-        onClick={() =>
-          trackGaEvent(GA_EVENTS.OFFER_APPLY_OUTBOUND, {
-            offer_slug: offerSlug,
-            vendor,
-            offer_title: offerTitle,
-          })
-        }
+        variant="default"
+        size="lg"
+        asChild
+        className="w-full mono uppercase tracking-[0.05em]"
       >
-        Apply on {vendor} →
+        <a
+          href={applyUrl}
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          onClick={() =>
+            trackGaEvent(GA_EVENTS.OFFER_APPLY_OUTBOUND, {
+              offer_slug: offerSlug,
+              vendor,
+              offer_title: offerTitle,
+            })
+          }
+        >
+          Apply on {vendor} →
+        </a>
       </Button>
     );
   }

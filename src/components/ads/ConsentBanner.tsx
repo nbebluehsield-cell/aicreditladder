@@ -51,7 +51,7 @@ export function ConsentBanner() {
     <div
       role="dialog"
       aria-label="Cookie consent"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-[color:var(--rule)] bg-[color:var(--background)]/95 backdrop-blur supports-[backdrop-filter]:bg-[color:var(--background)]/80"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-[color:var(--rule)] bg-[color:var(--background)]/95 backdrop-blur supports-[backdrop-filter]:bg-[color:var(--background)]/80 before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-[color:var(--gold)]/25 before:to-transparent"
     >
       <div className="mx-auto flex w-full max-w-[1560px] flex-col gap-3 page-gutter-x py-3 pb-[max(0.85rem,env(safe-area-inset-bottom))] sm:flex-row sm:items-center sm:justify-between sm:py-3.5">
         <p className="text-[12.5px] leading-[1.5] text-[color:var(--foreground-dim)]">
@@ -65,14 +65,14 @@ export function ConsentBanner() {
           </a>
           .
         </p>
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="flex shrink-0 items-center gap-1 sm:gap-2">
           <button
             type="button"
             onClick={() => {
               writeConsent("no");
               setState("no");
             }}
-            className="mono h-9 px-3 text-[10.5px] uppercase tracking-[0.22em] text-[color:var(--muted)] hover:text-[color:var(--foreground)]"
+            className="editorial-link rounded-md px-3 py-2 text-[12px] font-medium text-[color:var(--muted)] transition hover:text-[color:var(--foreground)]"
           >
             Decline
           </button>
@@ -82,7 +82,7 @@ export function ConsentBanner() {
               writeConsent("yes");
               setState("yes");
             }}
-            className="mono h-9 border border-[color:var(--foreground)] bg-[color:var(--foreground)] px-3 text-[10.5px] uppercase tracking-[0.22em] text-[color:var(--background)] hover:bg-[color:var(--gold)] hover:border-[color:var(--gold)] hover:text-[color:var(--background)]"
+            className="cta-primary-fill focus-ring h-10 rounded-md px-5 text-[11px] font-semibold uppercase tracking-[0.08em] text-[color:var(--background)]"
           >
             Accept
           </button>

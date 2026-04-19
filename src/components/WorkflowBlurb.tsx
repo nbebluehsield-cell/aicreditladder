@@ -61,24 +61,28 @@ export async function WorkflowBlurb() {
             not hype.
           </p>
 
-          <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
+          <div className="mt-7 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-6">
             <Link
               href="#projects"
               className="
-                inline-flex w-full items-center justify-center gap-2
-                rounded-full bg-[color:var(--gold)] px-5 py-3
-                text-[13.5px] font-medium text-black
-                transition hover:brightness-110 active:scale-[0.98]
-                focus-ring
-                sm:w-auto sm:justify-start
+                cta-primary-fill focus-ring inline-flex w-full items-center justify-center
+                rounded-md px-6 py-3.5 sm:w-auto sm:justify-start
               "
             >
-              Start with your stack <span aria-hidden>→</span>
+              <span className="inline-flex flex-wrap items-baseline justify-center gap-x-2 gap-y-0 text-[14px] font-semibold leading-snug tracking-[0.01em] text-[color:var(--background)]">
+                <span className="font-sans">Start with</span>
+                <span className="italic-display text-[1.05em] font-normal tracking-[0]">
+                  your stack
+                </span>
+                <span aria-hidden className="ml-0.5 font-sans font-semibold not-italic">
+                  →
+                </span>
+              </span>
             </Link>
             <Link
               href="/explore"
               prefetch
-              className="text-center text-[13px] text-[color:var(--muted)] underline-offset-4 transition hover:text-[color:var(--foreground)] hover:underline sm:text-left"
+              className="editorial-link text-center text-[13px] text-[color:var(--muted)] transition hover:text-[color:var(--foreground)] sm:text-left"
             >
               Browse all {offers.length} →
             </Link>
@@ -178,19 +182,14 @@ function HeroLadderRail({
                   target="_blank"
                   rel="noopener noreferrer sponsored"
                   className="
-                    shrink-0 inline-flex min-h-[44px] min-w-[5.25rem] items-center justify-center gap-1
-                    rounded-full border border-[color:var(--gold)]/50
-                    bg-[color:var(--gold-soft)]
-                    px-3.5 py-2 sm:min-h-0 sm:min-w-0 sm:justify-start sm:px-3 sm:py-1.5
-                    text-[12px] font-medium text-[color:var(--gold-bright)]
-                    transition hover:bg-[color:var(--gold)] hover:text-black
-                    focus-ring
-                    active:brightness-95
-                    sm:text-[11.5px]
+                    cta-rail-out focus-ring shrink-0 inline-flex min-h-[44px] min-w-[5.25rem] items-center justify-center gap-1
+                    rounded-md px-3 py-2 sm:min-h-0 sm:min-w-0 sm:justify-start sm:px-2.5 sm:py-1.5
+                    text-[11px] font-medium tracking-[0.04em] sm:text-[10.5px]
                   "
                   aria-label={`Get credits from ${offer.vendor} at the source`}
                 >
-                  Get credits <span aria-hidden>↗</span>
+                  <span className="mono uppercase tracking-[0.14em]">Get credits</span>
+                  <span aria-hidden className="text-[color:var(--muted-2)]">↗</span>
                 </a>
               </div>
             </li>

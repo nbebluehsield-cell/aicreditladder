@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/site-url";
+import { SITE_ORG_DESCRIPTION } from "@/lib/site-seo";
 
 /**
  * Organization + WebSite schema for crawlers (rich results, brand panel).
@@ -13,8 +14,13 @@ export function SiteJsonLd() {
         "@id": `${SITE_URL}/#organization`,
         name: "AI Credit Ladder",
         url: SITE_URL,
-        description:
-          "Editorial index of verified startup AI and cloud credits — frontier-first, solo-founder readable.",
+        description: SITE_ORG_DESCRIPTION,
+        knowsAbout: [
+          "Startup company",
+          "Cloud computing",
+          "Artificial intelligence",
+          "Solo entrepreneur",
+        ],
         logo: {
           "@type": "ImageObject",
           "@id": `${SITE_URL}/#logo`,
@@ -30,8 +36,7 @@ export function SiteJsonLd() {
         "@id": `${SITE_URL}/#website`,
         url: SITE_URL,
         name: "AI Credit Ladder",
-        description:
-          "Verified AI API, IDE, and cloud credits for builders — explore by stack, stage, or claim path.",
+        description: SITE_ORG_DESCRIPTION,
         publisher: { "@id": `${SITE_URL}/#organization` },
         inLanguage: "en-US",
         isAccessibleForFree: true,

@@ -37,7 +37,7 @@ export default function Contact() {
         />
         <Reason
           n="03"
-          label="Sponsor the ledger"
+          label="Sponsor the index"
           detail="You run an AI or cloud credit program for early-stage founders. See the sponsor page for inventory."
           email="sponsor@aicreditladder.com"
         />

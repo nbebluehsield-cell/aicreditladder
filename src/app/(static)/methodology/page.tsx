@@ -40,7 +40,7 @@ export default function Methodology() {
           n="02"
           label="Active"
           cadence="Monthly"
-          detail="Every live offer across the ledger, re-sourced at least once per month."
+          detail="Every live offer in the directory, re-sourced at least once per month."
         />
         <Row
           n="03"

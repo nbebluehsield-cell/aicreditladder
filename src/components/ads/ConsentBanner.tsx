@@ -57,7 +57,7 @@ export function ConsentBanner() {
       <div className="mx-auto flex w-full max-w-[1560px] flex-col gap-3 page-gutter-x py-3 pb-[max(0.85rem,env(safe-area-inset-bottom))] sm:flex-row sm:items-center sm:justify-between sm:py-3.5">
         <p className="text-[12.5px] leading-[1.5] text-[color:var(--foreground-dim)]">
           We use cookies to measure traffic and — if you say yes — to show
-          relevant, labeled sponsor ads that keep the ledger free.{" "}
+          relevant, labeled sponsor ads that keep the index free.{" "}
           <a
             href="/privacy"
             className="underline-offset-4 hover:text-[color:var(--foreground)] hover:underline"

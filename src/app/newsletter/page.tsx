@@ -15,10 +15,10 @@ export const metadata = {
  *   1. Masthead strip      — dateline, issue number, live countdown
  *   2. Hero                — display serif + framed subscribe panel
  *   3. Sample issue        — typographic preview of what lands in inbox
- *   4. Past issues         — ledger-style index of recent archive
+ *   4. Past issues         — directory-style index of recent archive
  *   5. Closing strip       — second CTA, terminal-style
  *
- * Anchors to the same full-bleed canvas the homepage ledger uses
+ * Anchors to the same full-bleed canvas the homepage index uses
  * (`max-w-[1560px]`), so the masthead, hero, and archive all land on
  * the same vertical rules as offer rows. Readers should feel this is
  * the same product, just a quieter page.
@@ -262,7 +262,7 @@ export default function Newsletter() {
             >
               See you Sunday.{" "}
               <span className="italic-display text-[color:var(--foreground-dim)]">
-                Or don&rsquo;t — the ledger is always open.
+                Or don&rsquo;t — the index is always open.
               </span>
             </p>
             <p className="mt-3 text-[13.5px] leading-[1.55] text-[color:var(--foreground-dim)]">
@@ -271,7 +271,7 @@ export default function Newsletter() {
                 href="/"
                 className="underline-offset-4 hover:text-[color:var(--foreground)] hover:underline"
               >
-                full ledger
+                full directory
               </Link>{" "}
               updates continuously. The Sunday Digest is the curated cut.
             </p>

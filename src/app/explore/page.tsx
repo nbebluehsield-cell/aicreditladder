@@ -12,15 +12,15 @@ import { filterOffers, parseSearchParams, sortOffers } from "@/lib/offers";
 import { SITE_URL } from "@/lib/site-url";
 
 export const metadata: Metadata = {
-  title: "Explore — every credit, every filter",
+  title: "Explore — search & filter every startup AI & cloud credit",
   description:
-    "The full frontier: search, sort, and slice every indexed AI and cloud credit — by claim path, founder stage, credit type, eligibility, and effort.",
+    "Search, sort, and filter the full directory of AI APIs, IDEs, and cloud credits — by claim path, founder stage, credit type, eligibility, and effort. Updated weekly.",
   alternates: { canonical: `${SITE_URL}/explore` },
   openGraph: {
     url: `${SITE_URL}/explore`,
-    title: "Explore every startup AI credit · AI Credit Ladder",
+    title: "Explore startup AI & cloud credits · AI Credit Ladder",
     description:
-      "Frontier-wide directory — filter by stack fit, runway stage, and how you obtain credits. Built for solo founders before funding.",
+      "Full directory — filter by stack, runway stage, and how you claim credits. Built for solo founders before funding.",
   },
 };
 

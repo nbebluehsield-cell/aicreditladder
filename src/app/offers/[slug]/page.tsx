@@ -468,20 +468,24 @@ function FreshnessNote({
       : f.tone === "stale"
       ? "text-[color:var(--gold)]"
       : "text-[color:var(--muted)]";
+  const dot =
+    f.tone === "fresh"
+      ? "bg-[color:var(--teal)]"
+      : f.tone === "stale"
+      ? "bg-[color:var(--gold)]"
+      : "bg-[color:var(--muted)]";
   return (
     <p
-      className={`mono text-[10.5px] uppercase leading-[1.7] tracking-[0.22em] text-[color:var(--muted)] ${className}`}
+      className={`mono inline-flex items-center gap-1.5 text-[10.5px] uppercase leading-[1.7] tracking-[0.22em] text-[color:var(--muted)] ${className}`}
+      title={f.long}
     >
-      <span className={tone}>{f.long}</span>
-      <span className="text-[color:var(--muted-2)]"> · </span>
-      <Link
-        href={offer.official_url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="underline-offset-4 hover:text-[color:var(--foreground)] hover:underline"
-      >
-        Source ↗
-      </Link>
+      <span
+        aria-hidden
+        className={`inline-block h-1.5 w-1.5 rounded-full ${dot} ${
+          f.tone === "fresh" ? "animate-pulse" : ""
+        }`}
+      />
+      <span className={tone}>Verified</span>
     </p>
   );
 }

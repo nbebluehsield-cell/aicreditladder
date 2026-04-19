@@ -1,10 +1,10 @@
 # AI Credit Ladder
 
-> Editorial index of verified startup AI, IDE, and cloud credits for solo founders and early teams.
+> Independent directory of verified startup AI, IDE, and cloud credit programs — amounts, eligibility, and official apply links, searchable by stack and claim path.
 
-- Site: https://aicreditladder.com/
-- Explore (search & filters): https://aicreditladder.com/explore
-- Newsletter: https://aicreditladder.com/newsletter
-- Methodology: https://aicreditladder.com/methodology
+- Site: https://www.aicreditladder.com/
+- Explore (search & filters): https://www.aicreditladder.com/explore
+- Newsletter: https://www.aicreditladder.com/newsletter
+- Methodology: https://www.aicreditladder.com/methodology
 
-Programs are summarized from public vendor pages; always claim credits at the official source linked from each offer.
+Content summarizes public vendor terms; always claim credits via the official source linked on each offer.

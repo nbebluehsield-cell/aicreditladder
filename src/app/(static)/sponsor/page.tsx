@@ -42,7 +42,7 @@ export default function Sponsor() {
             </li>
             <li>
               We don&rsquo;t bury, reorder, or hide official listings. A
-              sponsored row sits beside the ledger, not on top of it.
+              sponsored row sits beside the index, not on top of it.
             </li>
             <li>
               We review every offer for founder relevance before it runs. If
@@ -59,7 +59,7 @@ export default function Sponsor() {
         <Section title="Inventory">
           <Slot
             name="Homepage sponsor row"
-            where="Directly above the Now → Next → Later ledger."
+            where="Directly above the Now → Next → Later program rows on the homepage."
             look="Native row — your logo, one line, credit amount, CTA. Gold accent bar left of the card."
             unit="1 active slot · weekly"
           />
@@ -115,7 +115,7 @@ export default function Sponsor() {
             href="/"
             className="underline-offset-4 hover:text-[color:var(--foreground)] hover:underline"
           >
-            ledger
+            index
           </Link>
           .
         </p>

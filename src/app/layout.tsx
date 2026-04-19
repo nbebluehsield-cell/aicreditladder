@@ -8,20 +8,13 @@ import { ConsentBanner } from "@/components/ads/ConsentBanner";
 import { AdSenseScript } from "@/components/ads/AdSenseScript";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { SITE_URL } from "@/lib/site-url";
-
-/** High-intent phrases for search + AI retrieval (keep concise). */
-const SITE_KEYWORDS = [
-  "AI credits",
-  "startup credits",
-  "free AI API credits",
-  "cloud credits for startups",
-  "solo founder",
-  "OpenAI credits",
-  "AWS Activate",
-  "Google Cloud credits",
-  "verified AI programs",
-  "developer credits",
-] as const;
+import {
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_OG_DESCRIPTION,
+  SITE_OG_IMAGE_ALT,
+  SITE_TITLE_DEFAULT,
+} from "@/lib/site-seo";
 
 const instrument = Instrument_Serif({
   variable: "--font-instrument",
@@ -43,15 +36,19 @@ const jetbrains = JetBrains_Mono({
   display: "swap",
 });
 
+const googleSiteVerification =
+  process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default:
-      "AI Credit Ladder — Verified startup AI credits on the frontier",
+    default: SITE_TITLE_DEFAULT,
     template: "%s · AI Credit Ladder",
   },
-  description:
-    "Editorial index of verified AI API, IDE, and cloud credits for solo founders and early teams. Explore by stack, stage, or claim path — updated weekly.",
+  description: SITE_DESCRIPTION,
+  ...(googleSiteVerification
+    ? { verification: { google: googleSiteVerification } }
+    : {}),
   applicationName: "AI Credit Ladder",
   keywords: [...SITE_KEYWORDS],
   authors: [{ name: "AI Credit Ladder", url: SITE_URL }],
@@ -74,28 +71,30 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: "AI Credit Ladder",
-    title: "AI Credit Ladder — Startup AI credits, verified weekly",
-    description:
-      "Frontier-first ledger of AI and cloud credits. Filter by how you claim, what you’re building, and where you are on the runway.",
+    title: SITE_TITLE_DEFAULT,
+    description: SITE_OG_DESCRIPTION,
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "AI Credit Ladder — verified startup AI and cloud credits for solo founders",
+        alt: SITE_OG_IMAGE_ALT,
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI Credit Ladder — Verified startup AI credits",
-    description:
-      "Editorial index for builders: AI APIs, copilots, cloud credits — explore, verify, claim at the source.",
+    title: SITE_TITLE_DEFAULT,
+    description: SITE_DESCRIPTION,
     images: ["/opengraph-image"],
   },
   alternates: {
     canonical: "./",
+    languages: {
+      "en-US": SITE_URL,
+      "x-default": SITE_URL,
+    },
     types: {
       "text/plain": "/llms.txt",
     },

@@ -352,6 +352,21 @@ a:focus-visible .sponsor-mark {
   filter: none;
   opacity: 1;
 }
+
+/* AWS wordmark — brand orange must survive; grayscale would read as ash. */
+.sponsor-mark-aws {
+  filter: none;
+  opacity: 0.72;
+  transition: filter 220ms ease, opacity 220ms ease, transform 220ms ease;
+}
+.project-type-card:hover .sponsor-mark-aws,
+.project-type-card:focus-visible .sponsor-mark-aws,
+.row-hover:hover .sponsor-mark-aws,
+a:hover .sponsor-mark-aws,
+a:focus-visible .sponsor-mark-aws {
+  opacity: 1;
+  filter: brightness(1.08);
+}
 @media (prefers-color-scheme: light) {
   .sponsor-mark {
     filter: grayscale(1) brightness(0.55) contrast(1.05);

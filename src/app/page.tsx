@@ -18,22 +18,25 @@ import { getOffers } from "@/lib/offers-source";
 import { sortOffers } from "@/lib/offers";
 import type { Offer } from "@/lib/types";
 import { SITE_URL } from "@/lib/site-url";
+import {
+  SITE_DESCRIPTION,
+  SITE_OG_DESCRIPTION,
+  SITE_TITLE_DEFAULT,
+} from "@/lib/site-seo";
 
 export const metadata: Metadata = {
-  title: "Frontier ledger — verified AI & cloud credits for builders",
-  description:
-    "The editorial shortlist for solo founders: stack-tagged credits, full index by claim path, weekly verification. Explore before you burn runway.",
+  title: { absolute: SITE_TITLE_DEFAULT },
+  description: SITE_DESCRIPTION,
   alternates: { canonical: SITE_URL },
   openGraph: {
     url: SITE_URL,
-    title: "AI Credit Ladder — Frontier ledger of verified AI credits",
-    description:
-      "Verified programs, solo-founder readable. Pick a stack or dive the full index — signup, startup, and partner paths sequenced like a ladder.",
+    title: SITE_TITLE_DEFAULT,
+    description: SITE_OG_DESCRIPTION,
   },
 };
 
 /**
- * Homepage — the Ledger.
+ * Homepage — verified credit programs by claim path.
  *
  * Workflow blurb → project types (each links to a filtered page) → full
  * index below grouped by claim path. Order matches how founders read it.
@@ -61,7 +64,7 @@ export default async function Home() {
 }
 
 /* ─────────────────────────────────────────────────────────────────────
-   Ladder ledger — grouped by how you obtain credits (derived path).
+   Programs by claim path — homepage index (Now → Next → Later buckets).
    ───────────────────────────────────────────────────────────────────── */
 
 function LadderLedger({ offers }: { offers: Offer[] }) {

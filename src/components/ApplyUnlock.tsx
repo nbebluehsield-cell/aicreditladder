@@ -91,8 +91,8 @@ export function ApplyUnlock({
             Unlock apply link <span aria-hidden>→</span>
           </button>
           <p className="text-[11.5px] leading-[1.5] text-[color:var(--muted)]">
-            One-click magic link. No password. We&rsquo;ll bring you right back
-            to this claim.
+            Takes ~30 seconds. One-click magic link, no password — we&rsquo;ll
+            bring you right back to this claim.
           </p>
         </>
       )}

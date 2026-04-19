@@ -1,8 +1,8 @@
 import { ImageResponse } from "next/og";
+import { SITE_OG_IMAGE_ALT } from "@/lib/site-seo";
 
 export const runtime = "nodejs";
-export const alt =
-  "AI Credit Ladder — Verified startup AI and cloud credits on the frontier. Editorial index for solo founders and early teams.";
+export const alt = SITE_OG_IMAGE_ALT;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

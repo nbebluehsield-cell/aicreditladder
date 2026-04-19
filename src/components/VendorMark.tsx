@@ -38,6 +38,12 @@ export function VendorMark({
   const domain = safeDomain(officialUrl);
   const src = override ?? logoUrlForDomain(domain, size);
   const [failed, setFailed] = useState(!src);
+  const awsBareAccent =
+    Boolean(src) &&
+    !failed &&
+    tone === "muted" &&
+    variant === "bare" &&
+    (domain === "aws.amazon.com" || (src?.includes("/logos/aws.svg") ?? false));
 
   // With hex clip-path, corners are masked — we can run the mark slightly
   // larger for a compact, icon-like read without kissing the stroke.
@@ -79,7 +85,11 @@ export function VendorMark({
             onError={() => setFailed(true)}
             className={cn(
               "object-contain",
-              tone === "bright" ? "" : "sponsor-mark",
+              tone === "bright"
+                ? ""
+                : awsBareAccent
+                  ? "sponsor-mark-aws"
+                  : "sponsor-mark",
             )}
             style={{ width: size, height: size }}
             draggable={false}

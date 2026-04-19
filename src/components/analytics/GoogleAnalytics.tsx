@@ -7,8 +7,18 @@ import { readConsent } from "@/components/ads/ConsentBanner";
 import { gaMeasurementId } from "@/lib/analytics";
 
 /**
- * GA4 — loads only after the visitor accepts the cookie banner (same gate as
- * AdSense). Sends SPA page views on App Router navigations.
+ * GA4 (gtag.js) — equivalent to Google’s embed:
+ *   gtag/js?id=G-XXXXXXXXXX + dataLayer + gtag('js', new Date()) + gtag('config', …)
+ *
+ * Intentional differences from a raw site-wide snippet:
+ *   1. Loads only after cookie consent (“Accept”) so analytics matches the
+ *      privacy copy and EEA expectations (same gate as AdSense).
+ *   2. `send_page_view: false` on first `config`, then `PageView` calls
+ *      `gtag('config', id, { page_path })` on route/search changes — correct
+ *      for the App Router (client navigations need explicit page hits).
+ *
+ * Set `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-N1KVEX5T3W` (or your property ID) in
+ * Vercel / `.env.local`. `src/lib/analytics.ts` validates the `G-` format.
  */
 function PageView({ measurementId }: { measurementId: string }) {
   const pathname = usePathname();

@@ -1,3 +1,5 @@
+import { CONTACT_EMAIL } from "@/lib/contact-email";
+
 export const metadata = { title: "Privacy" };
 
 const LAST_UPDATED = "April 2026";
@@ -100,9 +102,9 @@ export default function Privacy() {
             Questions go to{" "}
             <a
               className="editorial-link text-[color:var(--gold)]"
-              href="mailto:hello@aicreditladder.com"
+              href={`mailto:${CONTACT_EMAIL}`}
             >
-              hello@aicreditladder.com
+              {CONTACT_EMAIL}
             </a>
             . We answer within a few business days.
           </p>

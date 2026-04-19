@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CONTACT_EMAIL } from "@/lib/contact-email";
 
 export const metadata = {
   title: "Sponsor",
@@ -101,9 +102,9 @@ export default function Sponsor() {
           Send a note to{" "}
           <a
             className="editorial-link text-[color:var(--gold)]"
-            href="mailto:sponsor@aicreditladder.com"
+            href={`mailto:${CONTACT_EMAIL}`}
           >
-            sponsor@aicreditladder.com
+            {CONTACT_EMAIL}
           </a>{" "}
           with your program, credit, and target founder profile. Short is
           good. We usually reply same week.

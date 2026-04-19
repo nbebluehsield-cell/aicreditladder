@@ -1,3 +1,5 @@
+import { CONTACT_EMAIL } from "@/lib/contact-email";
+
 export const metadata = { title: "Contact" };
 
 /**
@@ -27,19 +29,19 @@ export default function Contact() {
           n="01"
           label="Tip a new offer"
           detail="Found a credit that should be on the ladder? Send the vendor page. We verify and credit you in the changelog."
-          email="hello@aicreditladder.com"
+          email={CONTACT_EMAIL}
         />
         <Reason
           n="02"
           label="Correct a listing"
           detail="Stale amount, changed eligibility, expired link — anything drifting. We re-check fast when readers flag."
-          email="hello@aicreditladder.com"
+          email={CONTACT_EMAIL}
         />
         <Reason
           n="03"
           label="Sponsor the index"
           detail="You run an AI or cloud credit program for early-stage founders. See the sponsor page for inventory."
-          email="sponsor@aicreditladder.com"
+          email={CONTACT_EMAIL}
         />
       </div>
 

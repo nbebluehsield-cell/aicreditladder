@@ -136,7 +136,7 @@ This is the highest-margin path and the one the Blueprint wants us to lean on ov
 
 ### 4.1 Inbound
 
-The `/sponsor` page is already live and carries: inventory description, rules, pricing note, `sponsor@aicreditladder.com` contact. Link it from the newsletter footer and the `AdSlot` house ad (both already wired).
+The `/sponsor` page is already live and carries: inventory description, rules, pricing note, `michael@couch.cx` contact. Link it from the newsletter footer and the `AdSlot` house ad (both already wired).
 
 ### 4.2 Running a sponsor
 

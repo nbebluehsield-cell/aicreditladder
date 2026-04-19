@@ -1,7 +1,7 @@
 import { Container } from "@/components/Container";
 import { createServiceClient } from "@/lib/supabase/service";
 
-export const metadata = { title: "Subscribers — Admin · AI Credit Ladder" };
+export const metadata = { title: "Subscribers — Admin" };
 
 type Subscriber = {
   id: string;

@@ -2,7 +2,8 @@
 
 import { useActionState } from "react";
 import { Button } from "./ui/Button";
-import { signInWithMagicLink, NEWSLETTER_CONSENT_TEXT } from "@/app/actions/auth";
+import { signInWithMagicLink } from "@/app/actions/auth";
+import { NEWSLETTER_CONSENT_TEXT } from "@/lib/consent";
 
 /**
  * Magic-link sign-in form with explicit newsletter opt-in. All work
@@ -26,7 +27,7 @@ export function MagicLinkForm() {
           required
           autoComplete="email"
           placeholder="founder@yourcompany.com"
-          className="mono h-12 w-full rounded-full border border-[color:var(--rule-2)] bg-[color:var(--surface)] px-5 text-[13px] text-[color:var(--foreground)] placeholder:text-[color:var(--muted-2)] focus-ring"
+          className="mono h-12 w-full border border-[color:var(--foreground)] bg-[color:var(--surface)] px-5 text-[13px] text-[color:var(--foreground)] placeholder:text-[color:var(--muted)] focus-ring"
         />
       </div>
 
@@ -47,7 +48,7 @@ export function MagicLinkForm() {
       {state?.ok === true && (
         <p
           role="status"
-          className="mono rounded-md border border-[color:var(--teal)]/40 bg-[color:var(--teal-soft)] p-3 text-[12px] text-[color:var(--teal)]"
+          className="mono border border-[color:var(--teal)] bg-[color:var(--teal-soft)] p-3 text-[12px] text-[color:var(--teal)]"
         >
           {state.message}
         </p>
@@ -55,7 +56,7 @@ export function MagicLinkForm() {
       {state?.ok === false && (
         <p
           role="alert"
-          className="mono rounded-md border border-[color:var(--crimson)]/40 bg-red-500/10 p-3 text-[12px] text-[color:var(--crimson)]"
+          className="mono border border-[color:var(--gold)] bg-[color:var(--gold-soft)] p-3 text-[12px] text-[color:var(--gold)]"
         >
           {state.error}
         </p>

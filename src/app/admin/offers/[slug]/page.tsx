@@ -3,12 +3,13 @@ import Link from "next/link";
 import { Container } from "@/components/Container";
 import { Chip } from "@/components/ui/Chip";
 import { VerifyForm } from "@/components/admin/VerifyForm";
-import { SEED_OFFERS, getOffer } from "@/data/seed";
+import { getOffers, getOfferBySlug } from "@/lib/offers-source";
 
 type Params = { slug: string };
 
-export function generateStaticParams() {
-  return SEED_OFFERS.map((o) => ({ slug: o.slug }));
+export async function generateStaticParams() {
+  const all = await getOffers();
+  return all.map((o) => ({ slug: o.slug }));
 }
 
 export default async function AdminOfferDetail({
@@ -17,7 +18,7 @@ export default async function AdminOfferDetail({
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const offer = getOffer(slug);
+  const offer = await getOfferBySlug(slug);
   if (!offer) notFound();
 
   return (

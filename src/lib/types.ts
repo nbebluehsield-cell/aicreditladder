@@ -62,4 +62,8 @@ export interface ProjectType {
   slug: string;
   label: string;
   description?: string;
+  /** Full sentence(s) for the project landing H1 — flows as editorial copy, not a forced two-line template */
+  headline: string;
+  /** Optional substring of `headline` to emphasize in gold italic (first match only) */
+  headlineAccent?: string;
 }

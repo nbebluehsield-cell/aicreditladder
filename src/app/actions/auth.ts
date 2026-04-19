@@ -3,14 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
-
-/**
- * Consent copy shown next to the newsletter checkbox on the signin
- * form. Stored verbatim with every subscription record for GDPR
- * auditability — do not edit without versioning.
- */
-export const NEWSLETTER_CONSENT_TEXT =
-  "I'd like the weekly AI Credit Ladder digest — 3–5 newly verified credits every Sunday. One-click unsubscribe.";
+import { NEWSLETTER_CONSENT_TEXT } from "@/lib/consent";
 
 type ActionState =
   | { ok: true; message: string }

@@ -11,8 +11,16 @@ export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const result = await subscribeToNewsletter(null, formData);
 
-  const referer = request.headers.get("referer") ?? "/";
-  const redirectTo = new URL(referer);
+  const origin = request.nextUrl.origin;
+  const referer = request.headers.get("referer");
+  let redirectTo: URL;
+  try {
+    const r = referer ? new URL(referer) : null;
+    redirectTo =
+      r?.origin === origin ? r : new URL("/", origin);
+  } catch {
+    redirectTo = new URL("/", origin);
+  }
   if (result.ok) {
     redirectTo.searchParams.set("subscribed", "1");
   } else {

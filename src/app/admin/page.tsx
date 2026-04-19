@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { Container } from "@/components/Container";
-import { SEED_OFFERS } from "@/data/seed";
+import { getOffers } from "@/lib/offers-source";
 
-export default function AdminHome() {
-  const unverified = SEED_OFFERS.filter((o) => !o.last_verified_at).length;
-  const total = SEED_OFFERS.length;
-  const solo = SEED_OFFERS.filter((o) => o.solo_founder_friendly === "yes").length;
+export default async function AdminHome() {
+  const all = await getOffers();
+  const unverified = all.filter((o) => !o.last_verified_at).length;
+  const total = all.length;
+  const solo = all.filter((o) => o.solo_founder_friendly === "yes").length;
 
   return (
     <Container className="py-12 sm:py-16">
@@ -23,7 +24,7 @@ export default function AdminHome() {
         <Stat
           k="Verified today"
           v={
-            SEED_OFFERS.filter((o) => {
+            all.filter((o) => {
               if (!o.last_verified_at) return false;
               const d = new Date(o.last_verified_at);
               const today = new Date();

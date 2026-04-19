@@ -1,15 +1,26 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { Fragment } from "react";
 import { Container } from "@/components/Container";
 import { OfferCard } from "@/components/OfferCard";
 import { FilterTray } from "@/components/FilterTray";
 import { VerificationNotice } from "@/components/VerificationNotice";
-import { SEED_OFFERS } from "@/data/seed";
+import { AdSlot } from "@/components/ads/AdSlot";
+import { getOffers } from "@/lib/offers-source";
 import { filterOffers, parseSearchParams, sortOffers } from "@/lib/offers";
+import { SITE_URL } from "@/lib/site-url";
 
-export const metadata = {
-  title: "Explore — every AI credit, filterable · AI Credit Ladder",
+export const metadata: Metadata = {
+  title: "Explore — every credit, every filter",
   description:
-    "Filter and sort the full directory of startup AI and cloud credits by founder stage, credit type, eligibility, and effort.",
+    "The full frontier: search, sort, and slice every indexed AI and cloud credit — by claim path, founder stage, credit type, eligibility, and effort.",
+  alternates: { canonical: `${SITE_URL}/explore` },
+  openGraph: {
+    url: `${SITE_URL}/explore`,
+    title: "Explore every startup AI credit · AI Credit Ladder",
+    description:
+      "Frontier-wide directory — filter by stack fit, runway stage, and how you obtain credits. Built for solo founders before funding.",
+  },
 };
 
 type SP = Promise<Record<string, string | string[] | undefined>>;
@@ -21,10 +32,11 @@ export default async function ExplorePage({
 }) {
   const sp = await searchParams;
   const { filters, sort } = parseSearchParams(sp);
-  const filtered = sortOffers(filterOffers(SEED_OFFERS, filters), sort);
+  const all = await getOffers();
+  const filtered = sortOffers(filterOffers(all, filters), sort);
 
   return (
-    <main className="flex-1 pb-24 md:pb-0">
+    <div className="flex flex-1 flex-col pb-24 md:pb-0">
       <VerificationNotice compact />
 
       <section className="border-b border-[color:var(--rule)]">
@@ -38,9 +50,9 @@ export default async function ExplorePage({
             </span>
           </h1>
           <p className="mt-5 max-w-xl text-[14.5px] leading-[1.6] text-[color:var(--muted)]">
-            {SEED_OFFERS.length} startup AI and cloud credit offers, sorted
-            for solo and pre-funding founders by default. Filter by stage,
-            credit type, eligibility, and effort.
+            {all.length} startup AI and cloud credit offers, sorted for solo
+            and pre-funding founders by default. Filter by path, stage, credit
+            type, eligibility, and effort.
           </p>
         </Container>
       </section>
@@ -48,7 +60,7 @@ export default async function ExplorePage({
       <FilterTray
         filters={filters}
         sort={sort}
-        total={SEED_OFFERS.length}
+        total={all.length}
         filtered={filtered.length}
       />
 
@@ -58,14 +70,19 @@ export default async function ExplorePage({
             <EmptyState />
           ) : (
             <div className="border-t border-[color:var(--rule)]">
-              {filtered.map((o) => (
-                <OfferCard key={o.id} offer={o} />
+              {filtered.map((o, i) => (
+                <Fragment key={o.id}>
+                  <OfferCard offer={o} />
+                  {i === 9 && filtered.length > 12 && (
+                    <AdSlot placement="explore_inline" />
+                  )}
+                </Fragment>
               ))}
             </div>
           )}
         </Container>
       </section>
-    </main>
+    </div>
   );
 }
 

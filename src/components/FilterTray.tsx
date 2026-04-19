@@ -32,14 +32,23 @@ const SORT_OPTIONS: { key: SortKey; label: string }[] = [
   { key: "value_asc", label: "Lowest value" },
 ];
 
-const CREDIT_TYPE_OPTIONS: { key: Filters["creditType"]; label: string }[] = [
+const CREDIT_TYPE_OPTIONS: { key: NonNullable<Filters["creditType"]> | null; label: string }[] = [
   { key: "ai_api", label: "AI API" },
   { key: "cloud", label: "Cloud" },
   { key: "saas", label: "SaaS" },
   { key: "mixed", label: "Mixed" },
 ];
 
-const STAGE_OPTIONS: { key: Filters["stage"]; label: string }[] = [
+const PATH_OPTIONS: {
+  key: NonNullable<Filters["creditPath"]> | null;
+  label: string;
+}[] = [
+  { key: "signup", label: "Sign up & start" },
+  { key: "startup_program", label: "Startup programs" },
+  { key: "partner_or_investor", label: "Partner / VC path" },
+];
+
+const STAGE_OPTIONS: { key: NonNullable<Filters["stage"]> | null; label: string }[] = [
   { key: "now", label: "● Now" },
   { key: "next", label: "◐ Next" },
   { key: "later", label: "○ Later" },
@@ -80,11 +89,75 @@ export function FilterTray({ filters, sort, total, filtered }: Props) {
 
   const currentQ = searchParams.get("q") ?? "";
 
+  const chips = (
+    <>
+      {filters.solo && (
+        <ActiveChip label="Solo-friendly" onRemove={() => update({ solo: false })} />
+      )}
+      {filters.noVc && (
+        <ActiveChip label="No VC" onRemove={() => update({ noVc: false })} />
+      )}
+      {filters.noPartner && (
+        <ActiveChip label="No partner" onRemove={() => update({ noPartner: false })} />
+      )}
+      {filters.noRegistration && (
+        <ActiveChip
+          label="No entity required"
+          onRemove={() => update({ noRegistration: false })}
+        />
+      )}
+      {filters.creditType && (
+        <ActiveChip
+          label={CREDIT_TYPE_OPTIONS.find((o) => o.key === filters.creditType)?.label ?? filters.creditType}
+          onRemove={() => update({ creditType: null })}
+        />
+      )}
+      {filters.creditPath && (
+        <ActiveChip
+          label={PATH_OPTIONS.find((o) => o.key === filters.creditPath)?.label ?? filters.creditPath}
+          onRemove={() => update({ creditPath: null })}
+        />
+      )}
+      {filters.stage && (
+        <ActiveChip
+          label={STAGE_OPTIONS.find((o) => o.key === filters.stage)?.label ?? filters.stage}
+          onRemove={() => update({ stage: null })}
+        />
+      )}
+      {filters.projectType && (
+        <ActiveChip
+          label={PROJECT_TYPES.find((p) => p.slug === filters.projectType)?.label ?? filters.projectType}
+          onRemove={() => update({ projectType: null })}
+        />
+      )}
+      {typeof filters.maxDifficulty === "number" && (
+        <ActiveChip
+          label={`Difficulty ≤ ${filters.maxDifficulty}`}
+          onRemove={() => update({ maxDifficulty: null })}
+        />
+      )}
+      {typeof filters.maxApplyMinutes === "number" && (
+        <ActiveChip
+          label={`Apply ≤ ${filters.maxApplyMinutes}m`}
+          onRemove={() => update({ maxApplyMinutes: null })}
+        />
+      )}
+      {filters.search && (
+        <ActiveChip
+          label={`"${filters.search}"`}
+          onRemove={() => update({ search: null })}
+        />
+      )}
+    </>
+  );
+
   return (
     <>
-      {/* Top bar — search + sort + filter toggle */}
-      <div className="sticky top-14 z-30 border-b border-[color:var(--rule)] bg-[color:var(--background)]/95 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-6 py-3">
+      {/* Sticky control bar — one compact row only (search + sort + filters + count).
+       *  Chips + "N of M" detail render below, non-sticky, so the sticky footprint
+       *  stays small on scroll. */}
+      <div className="sticky top-[var(--masthead-clearance)] z-30 border-b border-[color:var(--rule)] bg-[color:var(--background)]/92 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-6xl items-center gap-2 page-gutter-x py-2.5 sm:gap-3 sm:py-3">
           <form onSubmit={onSearch} className="flex min-w-0 flex-1 items-center">
             <label className="sr-only" htmlFor="q">
               Search
@@ -94,7 +167,7 @@ export function FilterTray({ filters, sort, total, filtered }: Props) {
               name="q"
               defaultValue={currentQ}
               placeholder="Search vendor or program…"
-              className="mono h-10 w-full min-w-0 rounded-full border border-[color:var(--rule-2)] bg-[color:var(--surface)] px-4 text-[13px] text-[color:var(--foreground)] placeholder:text-[color:var(--muted-2)] focus-ring"
+              className="mono h-9 w-full min-w-0 rounded-full border border-[color:var(--rule-2)] bg-[color:var(--surface)] px-4 text-[13px] text-[color:var(--foreground)] placeholder:text-[color:var(--muted-2)] focus-ring sm:h-10"
             />
           </form>
 
@@ -120,105 +193,66 @@ export function FilterTray({ filters, sort, total, filtered }: Props) {
             type="button"
             onClick={() => setMobileOpen((v) => !v)}
             className={cn(
-              "mono flex h-10 items-center gap-2 rounded-full border px-4 text-[12px] uppercase tracking-[0.16em] focus-ring",
+              "mono inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-[11.5px] uppercase tracking-[0.16em] focus-ring sm:h-10 sm:px-4 sm:text-[12px]",
               activeCount > 0
                 ? "border-[color:var(--gold)] text-[color:var(--gold)]"
                 : "border-[color:var(--rule-2)] text-[color:var(--foreground-dim)]",
             )}
             aria-expanded={mobileOpen}
           >
-            Filters
+            <span className="hidden sm:inline">Filters</span>
+            <span className="sm:hidden" aria-hidden>⚙</span>
             {activeCount > 0 && (
               <span className="num inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[color:var(--gold)] px-1.5 text-[11px] text-black">
                 {activeCount}
               </span>
             )}
           </button>
+
+          <span className="hidden shrink-0 text-[12px] text-[color:var(--muted)] md:inline">
+            <span className="num text-[color:var(--foreground)]">{filtered}</span>
+            <span className="mx-1 text-[color:var(--muted-2)]">/</span>
+            <span className="num">{total}</span>
+          </span>
         </div>
-
-        {/* Active filter chips */}
-        {activeCount > 0 && (
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-6 pb-3">
-            <span className="eyebrow">Active</span>
-            {filters.solo && (
-              <ActiveChip label="Solo-friendly" onRemove={() => update({ solo: false })} />
-            )}
-            {filters.noVc && (
-              <ActiveChip label="No VC" onRemove={() => update({ noVc: false })} />
-            )}
-            {filters.noPartner && (
-              <ActiveChip
-                label="No partner"
-                onRemove={() => update({ noPartner: false })}
-              />
-            )}
-            {filters.noRegistration && (
-              <ActiveChip
-                label="No entity required"
-                onRemove={() => update({ noRegistration: false })}
-              />
-            )}
-            {filters.creditType && (
-              <ActiveChip
-                label={CREDIT_TYPE_OPTIONS.find((o) => o.key === filters.creditType)?.label ?? filters.creditType}
-                onRemove={() => update({ creditType: null })}
-              />
-            )}
-            {filters.stage && (
-              <ActiveChip
-                label={STAGE_OPTIONS.find((o) => o.key === filters.stage)?.label ?? filters.stage}
-                onRemove={() => update({ stage: null })}
-              />
-            )}
-            {filters.projectType && (
-              <ActiveChip
-                label={PROJECT_TYPES.find((p) => p.slug === filters.projectType)?.label ?? filters.projectType}
-                onRemove={() => update({ projectType: null })}
-              />
-            )}
-            {typeof filters.maxDifficulty === "number" && (
-              <ActiveChip
-                label={`Difficulty ≤ ${filters.maxDifficulty}`}
-                onRemove={() => update({ maxDifficulty: null })}
-              />
-            )}
-            {typeof filters.maxApplyMinutes === "number" && (
-              <ActiveChip
-                label={`Apply ≤ ${filters.maxApplyMinutes}m`}
-                onRemove={() => update({ maxApplyMinutes: null })}
-              />
-            )}
-            {filters.search && (
-              <ActiveChip
-                label={`"${filters.search}"`}
-                onRemove={() => update({ search: null })}
-              />
-            )}
-            <button
-              type="button"
-              onClick={reset}
-              className="editorial-link ml-1 text-[11px] text-[color:var(--muted)]"
-            >
-              Clear all
-            </button>
-          </div>
-        )}
-
-        <p className="mx-auto max-w-6xl px-6 pb-3 text-[12px] text-[color:var(--muted)]">
-          <span className="num text-[color:var(--foreground)]">{filtered}</span> of{" "}
-          <span className="num">{total}</span> offers
-        </p>
       </div>
+
+      {/* Below-the-stick summary row — chips + count. Scrolls away with content. */}
+      {(activeCount > 0 || filtered !== total) && (
+        <div className="border-b border-[color:var(--rule)] bg-[color:var(--background)]">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-3 gap-y-2 page-gutter-x py-3">
+            <p className="text-[12px] text-[color:var(--muted)]">
+              <span className="num text-[color:var(--foreground)]">{filtered}</span> of{" "}
+              <span className="num">{total}</span> offers
+            </p>
+            {activeCount > 0 && (
+              <>
+                <span aria-hidden className="text-[color:var(--muted-2)]">·</span>
+                <div className="flex flex-wrap items-center gap-2">
+                  {chips}
+                  <button
+                    type="button"
+                    onClick={reset}
+                    className="editorial-link ml-1 text-[11px] text-[color:var(--muted)]"
+                  >
+                    Clear all
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Filter tray — slides down on mobile, inline on desktop */}
       <div
         className={cn(
           "border-b border-[color:var(--rule)] bg-[color:var(--background-2)] transition-[max-height,opacity] duration-300 ease-out overflow-hidden",
-          mobileOpen ? "max-h-[1600px] opacity-100" : "max-h-0 opacity-0",
+          mobileOpen ? "max-h-[2400px] opacity-100" : "max-h-0 opacity-0",
         )}
       >
-        <div className="mx-auto max-w-6xl px-6 py-6">
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto max-w-6xl page-gutter-x py-6">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             <FilterGroup title="Founder fit">
               <ToggleRow
                 label="Solo-friendly"
@@ -239,6 +273,14 @@ export function FilterTray({ filters, sort, total, filtered }: Props) {
                 label="No company entity needed"
                 checked={!!filters.noRegistration}
                 onChange={(v) => update({ noRegistration: v })}
+              />
+            </FilterGroup>
+
+            <FilterGroup title="How you get credits">
+              <PillRow
+                value={filters.creditPath ?? null}
+                options={[{ key: null, label: "Any" }, ...PATH_OPTIONS]}
+                onChange={(v) => update({ creditPath: v as Filters["creditPath"] })}
               />
             </FilterGroup>
 

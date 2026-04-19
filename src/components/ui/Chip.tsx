@@ -1,26 +1,35 @@
 import { cn } from "@/lib/cn";
 
-type Tone = "neutral" | "gold" | "teal" | "success" | "danger" | "muted" | "stage-now" | "stage-next" | "stage-later";
+type Tone =
+  | "neutral"
+  | "gold"
+  | "teal"
+  | "success"
+  | "danger"
+  | "muted"
+  | "stage-now"
+  | "stage-next"
+  | "stage-later";
 
 const tones: Record<Tone, string> = {
   neutral:
-    "bg-transparent text-[color:var(--foreground-dim)] border border-[color:var(--rule-2)]",
+    "bg-transparent text-[color:var(--foreground-dim)] border-[color:var(--rule-2)]",
   gold:
-    "bg-[color:var(--gold-soft)] text-[color:var(--gold)] border border-[color:var(--gold-rule)]",
+    "bg-[color:var(--gold-soft)] text-[color:var(--gold)] border-[color:var(--gold)]",
   teal:
-    "bg-[color:var(--teal-soft)] text-[color:var(--teal)] border border-teal-400/30",
+    "bg-[color:var(--teal-soft)] text-[color:var(--teal)] border-[color:var(--teal)]",
   success:
-    "bg-green-500/10 text-green-300 border border-green-500/25",
+    "bg-[color:var(--teal-soft)] text-[color:var(--teal)] border-[color:var(--teal)]",
   danger:
-    "bg-red-500/10 text-red-300 border border-red-500/25",
+    "bg-[color:var(--gold-soft)] text-[color:var(--gold)] border-[color:var(--gold)]",
   muted:
-    "bg-transparent text-[color:var(--muted)] border border-[color:var(--rule)]",
+    "bg-transparent text-[color:var(--muted)] border-[color:var(--rule-2)]",
   "stage-now":
-    "bg-[color:var(--teal-soft)] text-[color:var(--teal)] border border-teal-400/30",
+    "bg-[color:var(--teal-soft)] text-[color:var(--teal)] border-[color:var(--teal)]",
   "stage-next":
-    "bg-[color:var(--gold-soft)] text-[color:var(--gold)] border border-[color:var(--gold-rule)]",
+    "bg-[color:var(--gold-soft)] text-[color:var(--gold)] border-[color:var(--gold)]",
   "stage-later":
-    "bg-transparent text-[color:var(--muted)] border border-[color:var(--rule-2)]",
+    "bg-transparent text-[color:var(--muted)] border-[color:var(--rule-2)]",
 };
 
 export function Chip({
@@ -37,10 +46,10 @@ export function Chip({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-sm px-1.5 py-0.5 text-[10.5px] leading-none tracking-wider uppercase",
+        "inline-flex items-center gap-1.5 border px-1.5 py-0.5 text-[10px] leading-none tracking-[0.14em] uppercase",
         mono && "mono",
         tones[tone],
-        className
+        className,
       )}
     >
       {children}

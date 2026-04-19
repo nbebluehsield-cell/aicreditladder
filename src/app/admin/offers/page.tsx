@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { Chip } from "@/components/ui/Chip";
-import { SEED_OFFERS } from "@/data/seed";
+import { getOffers } from "@/lib/offers-source";
 
-export const metadata = { title: "Offers — Admin · AI Credit Ladder" };
+export const metadata = { title: "Offers — Admin" };
 
-export default function AdminOffersList() {
-  const offers = [...SEED_OFFERS].sort((a, b) => {
+export default async function AdminOffersList() {
+  const all = await getOffers();
+  const offers = [...all].sort((a, b) => {
     // unverified first, then by slug
     const av = a.last_verified_at ? 1 : 0;
     const bv = b.last_verified_at ? 1 : 0;
@@ -37,7 +38,7 @@ export default function AdminOffersList() {
             <Th>Value</Th>
             <Th>Status</Th>
             <Th>Last verified</Th>
-            <Th></Th>
+            <Th>{""}</Th>
           </tr>
         </thead>
         <tbody>

@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  /* Hides the floating dev indicator so it does not cover mobile tap targets */
+  devIndicators: false,
 };
 
 export default nextConfig;

@@ -1,15 +1,17 @@
-export const metadata = { title: "About — AI Credit Ladder" };
+export const metadata = { title: "About" };
 
 export default function About() {
   return (
     <article>
       <p className="section-number mb-4">About</p>
-      <h1 className="display-h2">
+      <h1 className="display-hero">
         The smartest founder
         <br />
-        <span className="italic-display text-[color:var(--gold)]">quietly organized the market.</span>
+        <span className="italic-display text-[color:var(--gold)]">
+          quietly organized the market.
+        </span>
       </h1>
-      <div className="mt-10 space-y-6 text-[16px] leading-[1.7] text-[color:var(--foreground-dim)]">
+      <div className="mt-7 space-y-5 text-[16px] leading-[1.65] text-[color:var(--foreground-dim)]">
         <p>
           AI Credit Ladder is a curated, verified index of startup AI and cloud
           credits — built for the solo founder or tiny team shipping an AI

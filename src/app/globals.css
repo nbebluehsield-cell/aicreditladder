@@ -1,32 +1,67 @@
 @import "tailwindcss";
 
-:root {
-  /* Deep, warm base */
-  --background: #070609;
-  --background-2: #0b0a10;
-  --background-3: #111018;
-  --foreground: #f4ece0;
-  --foreground-dim: #d4ccbd;
-  --muted: #8a8578;
-  --muted-2: #5a564d;
-  --rule: #1a1821;
-  --rule-2: #26232e;
-  --rule-3: #36323e;
-  --surface: #0f0d15;
-  --surface-2: #16131e;
-  --surface-3: #1d1a27;
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE LEDGER — dark editorial, premium craft
+   Warm near-black · bone-white ink · vermilion signal · pine "go"
+   Instrument Serif (display) + Inter (body) + JetBrains Mono (data)
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-  /* Signature accents */
-  --gold: #f0b429;
-  --gold-bright: #fbd24e;
-  --gold-deep: #b8830f;
-  --gold-soft: rgba(240, 180, 41, 0.14);
-  --gold-glow: rgba(240, 180, 41, 0.35);
-  --teal: #5eead4;
-  --teal-soft: rgba(94, 234, 212, 0.14);
-  --teal-glow: rgba(94, 234, 212, 0.3);
-  --crimson: #e5484d;
-  --rose: #e93d82;
+:root {
+  color-scheme: dark;
+
+  /* Sticky bars (project switcher, explore filters) sit below the masthead.
+     Mobile uses a two-row masthead — clearance must match or content slides under.
+     When the header top padding grows for safe-area (notch), add the delta here. */
+  --masthead-clearance: calc(
+    7.625rem + max(0px, env(safe-area-inset-top, 0px) - 0.75rem)
+  );
+
+  /* Ground & ink */
+  --background: #0c0b0a;      /* warm near-black base */
+  --background-2: #141210;    /* lifted section */
+  --background-3: #1c1916;    /* rail / deepest */
+  --foreground: #f2ece0;      /* warm bone-white */
+  --foreground-dim: #c9c0ad;  /* secondary text */
+  --muted: #8a8273;           /* tertiary */
+  --muted-2: #5a5347;         /* quaternary — deliberately low */
+
+  /* Rules / borders — dark, minimal contrast */
+  --rule: #2a2622;
+  --rule-2: #3a332c;
+  --rule-3: #5a5043;
+
+  /* Surfaces layered on ground */
+  --surface: #1a1714;
+  --surface-2: #231f1a;
+  --surface-3: #2c2721;
+
+  /* ─── "Gold" carries the signal-red accent (backward compat).
+         International Orange — Golden Gate Bridge — the imperial
+         bridge in our brandmark is the source of truth for this color,
+         and every CTA, eyebrow, and live indicator inherits from it. ─── */
+  --gold: #e04e2f;            /* International Orange — the imperial bridge */
+  --gold-bright: #ed6a4c;
+  --gold-deep: #b83a1f;
+  --gold-soft: rgba(224, 78, 47, 0.1);
+  --gold-glow: rgba(224, 78, 47, 0.22);
+  --gold-rule: #c8421f;
+  --bridge: #e04e2f;          /* named alias — use in brand surfaces only */
+
+  /* "Teal" = pine, brightened for dark */
+  --teal: #7fb679;
+  --teal-soft: rgba(127, 182, 121, 0.1);
+  --teal-glow: rgba(127, 182, 121, 0.22);
+
+  --crimson: #e0422e;
+  --rose: #d45675;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --masthead-clearance: calc(
+      4.125rem + max(0px, env(safe-area-inset-top, 0px) - 1rem)
+    );
+  }
 }
 
 @theme inline {
@@ -49,9 +84,28 @@
   --color-teal: var(--teal);
   --color-teal-soft: var(--teal-soft);
   --color-crimson: var(--crimson);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --font-display: var(--font-instrument);
+}
+
+/* Editorial gutter — mobile: ~16px symmetric inset + safe-area (readable,
+ * thumb-friendly); sm+ widens the right side slightly for rag balance. */
+.page-gutter-x {
+  padding-left: max(1rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1rem, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 640px) {
+  .page-gutter-x {
+    padding-left: max(1rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+  }
+}
+@media (min-width: 1024px) {
+  .page-gutter-x {
+    padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+    padding-right: max(2.5rem, env(safe-area-inset-right, 0px));
+  }
 }
 
 html, body {
@@ -59,34 +113,103 @@ html, body {
   color: var(--foreground);
 }
 
-body {
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  font-feature-settings: "ss01", "cv11";
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+html {
+  /* App feel: smooth anchor scrolling, no rubber-band flash on body
+   * containers, respect safe areas at the root so fixed children can
+   * use env() without extra plumbing. */
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  overscroll-behavior-y: none;
 }
 
-/* ─── Typography primitives ─── */
-.display {
-  font-family: var(--font-fraunces), "Times New Roman", serif;
-  font-variation-settings: "opsz" 144, "SOFT" 100;
-  letter-spacing: -0.025em;
-  line-height: 0.92;
-  font-weight: 400;
+body {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  /* Snappier taps on touch devices; avoids double-tap zoom delay where applicable */
+  touch-action: manipulation;
+  /* App feel — no native text selection, no long-press callouts */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  /* Subtle dark warmth — a glow, not a gradient mess */
+  background-image:
+    radial-gradient(ellipse 1100px 720px at 14% -6%, rgba(224, 78, 47, 0.085), transparent 58%),
+    radial-gradient(ellipse 820px 560px at 96% 4%, rgba(127, 182, 121, 0.055), transparent 55%),
+    radial-gradient(ellipse 600px 400px at 50% 120%, rgba(224, 78, 47, 0.03), transparent 50%);
+  background-attachment: fixed;
 }
-.display-tight { letter-spacing: -0.04em; }
-.italic-display {
-  font-family: var(--font-fraunces), serif;
-  font-style: italic;
-  font-weight: 300;
+
+/* Form controls + opt-in regions stay fully selectable — essential
+   for paste/undo and copying addresses, codes, URLs.
+   The 16px minimum font-size is critical on iOS: anything smaller
+   causes Safari to auto-zoom on focus, which instantly breaks the
+   illusion of a native app. */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+input,
+textarea,
+select,
+[contenteditable="true"],
+.select-text,
+.select-text * {
+  user-select: text;
+  -webkit-user-select: text;
+  -webkit-touch-callout: default;
+}
+
+img,
+svg {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ═══ Typography primitives ═══════════════════════════════════════════════ */
+
+.display {
+  font-family: var(--font-instrument), "Times New Roman", serif;
+  font-weight: 400;
   letter-spacing: -0.02em;
+  line-height: 0.96;
+}
+.display-tight { letter-spacing: -0.035em; }
+.italic-display {
+  font-family: var(--font-instrument), serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+
+/* Bridge-colored italic — editorial signature, short phrases only */
+.flourish {
+  font-family: var(--font-instrument), serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--gold);
+}
+
+/* Warm aside — Instrument italic; set color in markup */
+.whisper-serif {
+  font-family: var(--font-instrument), serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.012em;
 }
 .mono {
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-feature-settings: "ss02", "zero";
 }
 .eyebrow {
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
   font-size: 10.5px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -94,99 +217,254 @@ body {
   font-weight: 500;
 }
 .num {
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
 }
 
-::selection { background: var(--gold); color: #07070a; }
+/* Drop-cap for editorial paragraphs */
+.dropcap::first-letter {
+  font-family: var(--font-instrument), serif;
+  float: left;
+  font-size: 4.8em;
+  line-height: 0.82;
+  font-weight: 400;
+  padding: 0.08em 0.08em 0 0;
+  color: var(--gold);
+  font-style: italic;
+}
 
-/* ─── Textures ─── */
+::selection { background: var(--gold); color: #0c0b0a; }
+
+/* ═══ Textures — film grain on dark ═══════════════════════════════════════ */
 .grain {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.035;
+  opacity: 0.08;
   mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95  0 0 0 0 0.92  0 0 0 0 0.85  0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
-.dot-grid {
-  background-image: radial-gradient(circle at 1px 1px, rgba(244,236,224,0.055) 1px, transparent 0);
-  background-size: 28px 28px;
+.dot-grid { background-image: none; }
+.gold-glow, .teal-glow { display: none; }
+
+/* ═══ Rules & dingbats ═══════════════════════════════════════════════════ */
+.hr-ornament {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--rule-2);
 }
-.gold-glow {
-  background: radial-gradient(ellipse at center, var(--gold-glow), transparent 70%);
-  filter: blur(60px);
+.hr-ornament::before, .hr-ornament::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: currentColor;
 }
-.teal-glow {
-  background: radial-gradient(ellipse at center, var(--teal-glow), transparent 70%);
-  filter: blur(60px);
+.hr-ornament__mark {
+  font-family: var(--font-instrument), serif;
+  font-style: italic;
+  color: var(--gold);
+  font-size: 14px;
 }
 
-/* ─── Rules ─── */
-.rule { border-color: var(--rule); }
-.rule-strong { border-color: var(--rule-2); }
-
-/* ─── Motion ─── */
+/* ═══ Motion ═════════════════════════════════════════════════════════════ */
 @keyframes pulse-dot {
   0%, 100% { box-shadow: 0 0 0 0 currentColor; opacity: 1; }
-  50% { box-shadow: 0 0 0 6px transparent; opacity: 0.8; }
+  50% { box-shadow: 0 0 0 6px transparent; opacity: 0.7; }
 }
-.pulse-dot {
-  animation: pulse-dot 2s ease-in-out infinite;
-}
+.pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
 
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
-.marquee { animation: marquee 40s linear infinite; }
+.marquee { animation: marquee 55s linear infinite; }
 
 @keyframes climb {
-  0% { transform: translateY(12px); opacity: 0; }
+  0% { transform: translateY(10px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
 }
-.climb-in {
-  animation: climb 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+.climb-in { animation: climb 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .climb-in { animation: none; }
 }
 
 @keyframes fade-up {
-  0% { transform: translateY(24px); opacity: 0; }
+  0% { transform: translateY(16px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
 }
-.fade-up { animation: fade-up 800ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.fade-up { animation: fade-up 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 
-@keyframes rung-flicker {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
+@keyframes rung-flicker { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
 .rung-flicker { animation: rung-flicker 3s ease-in-out infinite; }
 
-@keyframes ticker-tick {
-  0% { opacity: 0.4; }
-  10% { opacity: 1; }
-  100% { opacity: 1; }
+/* Project-type switcher: sticky lateral rail, snap-scroll on mobile.
+ * Contain horizontal overscroll so flicking tabs doesn’t chain-scroll the page
+ * (iOS would otherwise nudge the viewport and clip content under sticky bars). */
+.project-switcher__track {
+  scrollbar-width: none;
+  scroll-padding-inline: 1rem;
+  overscroll-behavior-x: contain;
+}
+.project-switcher__track::-webkit-scrollbar {
+  display: none;
+}
+/* Inactive chips: subtle rail hint on hover — never shrink the active tab’s bar */
+.project-chip:hover:not([aria-current="page"]) .project-chip__rail {
+  transform: scaleX(0.5);
+}
+.project-chip[aria-current="page"] .project-chip__rail {
+  transform: scaleX(1);
 }
 
-/* ─── Components ─── */
+/* Vendor logos: flat silhouette, tinted by theme.
+ * Collapse any colored favicon or SVG to pure black with brightness(0),
+ * then invert for dark-mode bone-white. Light mode skips the invert. */
+.logo-mono {
+  color: var(--foreground-dim);
+  opacity: 0.88;
+  transition: opacity 180ms ease, color 180ms ease;
+}
+.logo-mono img {
+  filter: brightness(0) invert(1) contrast(1.06);
+  transition: filter 180ms ease;
+}
+a:hover .logo-mono,
+.row-hover:hover .logo-mono {
+  opacity: 1;
+  color: var(--foreground);
+}
+
+/* Homepage project-type tiles: bare sponsor marks, inline, editorial.
+ * Desaturated + dimmed at rest so the typography leads; full-color on hover
+ * so the row lights up when the tile becomes the focus. */
+.sponsor-mark {
+  filter: grayscale(1) brightness(1.65) contrast(0.95);
+  opacity: 0.55;
+  transition: filter 220ms ease, opacity 220ms ease, transform 220ms ease;
+}
+.project-type-card:hover .sponsor-mark,
+.project-type-card:focus-visible .sponsor-mark,
+.row-hover:hover .sponsor-mark,
+a:hover .sponsor-mark,
+a:focus-visible .sponsor-mark {
+  filter: none;
+  opacity: 1;
+}
+@media (prefers-color-scheme: light) {
+  .sponsor-mark {
+    filter: grayscale(1) brightness(0.55) contrast(1.05);
+    opacity: 0.6;
+  }
+}
+
+/* Honeycomb cell — hex frame + inner clip so third-party marks sit tight
+ * without square corners bleeding past the cell. */
+.logo-hex__clip {
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+.logo-hex svg polygon {
+  fill: var(--background-2);
+  stroke: var(--rule-3);
+  transition: stroke 180ms ease, fill 180ms ease;
+}
+a:hover .logo-hex svg polygon,
+.row-hover:hover .logo-hex svg polygon {
+  stroke: var(--bridge);
+  fill: rgba(224, 78, 47, 0.08);
+}
+
+/* Project-type tiles: light hex field by default so full-color marks (often
+ * dark) stay legible. Warm off-white at rest, pure white on hover. */
+a.project-type-card .logo-hex svg polygon {
+  fill: #f5efe2;
+  stroke: rgba(58, 51, 44, 0.2);
+}
+a.project-type-card:hover .logo-hex svg polygon,
+a.project-type-card:focus-visible .logo-hex svg polygon {
+  fill: #ffffff;
+  stroke: var(--bridge);
+}
+
+/* Showcase tile — full-color logos; warm frame ties to ladder accent on hover */
+.logo-showcase {
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+.logo-showcase img {
+  filter: none;
+}
+.row-hover:hover .logo-showcase,
+a:hover .logo-showcase {
+  border-color: rgba(224, 78, 47, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(242, 236, 224, 0.07),
+    0 0 0 1px rgba(224, 78, 47, 0.18),
+    0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+@media (prefers-color-scheme: light) {
+  .logo-mono {
+    color: #2a241e;
+    opacity: 0.82;
+  }
+  .logo-mono img {
+    filter: brightness(0);
+  }
+  .project-type-card:hover .logo-mono img,
+  .project-type-card:focus-visible .logo-mono img {
+    filter: none;
+  }
+  a.project-type-card:hover .logo-hex svg polygon,
+  a.project-type-card:focus-visible .logo-hex svg polygon {
+    fill: #ffffff;
+    stroke: rgba(42, 38, 34, 0.2);
+  }
+  .logo-hex svg polygon {
+    fill: #f5efe2;
+    stroke: #d7cfc0;
+  }
+  .logo-showcase {
+    background: linear-gradient(to bottom, #faf7f1, #ede7dc);
+    border-color: #d7cfc0;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  }
+  .row-hover:hover .logo-showcase,
+  a:hover .logo-showcase {
+    border-color: #e04e2f;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      0 0 0 1px rgba(224, 78, 47, 0.2);
+  }
+}
+
+/* ═══ Components ═════════════════════════════════════════════════════════ */
+
+/* Numbered almanac section marker */
 .section-number {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   gap: 10px;
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
   font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--muted);
 }
 .section-number::before {
-  content: "";
-  display: block;
-  width: 24px;
-  height: 1px;
-  background: var(--gold);
+  content: "§";
+  font-family: var(--font-instrument), serif;
+  font-style: italic;
+  color: var(--gold);
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: 0;
 }
 
+/* Confidence meter — paper-friendly */
 .meter {
   display: inline-grid;
   grid-template-columns: repeat(5, 1fr);
@@ -194,60 +472,123 @@ body {
   width: 52px;
   height: 6px;
 }
-.meter > span {
-  background: var(--rule-2);
-  border-radius: 1px;
-}
-.meter > span.on-high { background: var(--gold); box-shadow: 0 0 4px var(--gold-glow); }
+.meter > span { background: var(--rule); border-radius: 1px; }
+.meter > span.on-high { background: var(--gold); }
 .meter > span.on-mid { background: var(--gold-deep); }
-.meter > span.on-low { background: var(--muted-2); }
+.meter > span.on-low { background: var(--muted); }
 
+/* Editorial link underline */
 .editorial-link {
   background-image: linear-gradient(currentColor, currentColor);
   background-size: 100% 1px;
   background-repeat: no-repeat;
   background-position: 0 100%;
-  transition: background-size 200ms;
+  transition: background-size 180ms;
 }
 .editorial-link:hover { background-size: 100% 2px; }
 
+/* Focus ring.
+ *
+ * A box-shadow ring (no outline-offset) so there is never a visible
+ * gap between the element and the indicator — the tell-tale sign of a
+ * low-effort web focus ring. Tight, flush, app-native. Applies only
+ * on keyboard focus so mouse clicks never paint a box. */
 .focus-ring { outline: none; }
 .focus-ring:focus-visible {
-  outline: 1.5px solid var(--gold);
-  outline-offset: 3px;
-  border-radius: 4px;
+  outline: none;
+  box-shadow: 0 0 0 1.5px var(--gold);
+  border-radius: 3px;
+}
+/* Suppress the default browser focus-ring on everything when the user
+ * is clicking with a pointer; rely on :focus-visible semantics. This
+ * matches the behavior of a native app (no outline on tap). */
+:focus:not(:focus-visible) { outline: none; }
+
+/* Serial number tag ("No. 014" style) */
+.serial {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.serial::before {
+  content: "№";
+  font-family: var(--font-instrument), serif;
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: 0;
+  color: var(--gold);
+  transform: translateY(1px);
 }
 
-/* Mobile viewport safety */
+/* Safe area bottom */
 @supports (padding: max(0px)) {
   .safe-bottom { padding-bottom: max(env(safe-area-inset-bottom), 1rem); }
 }
 
-/* Responsive display sizes — mobile first */
+/* ═══ Responsive display sizes ═══════════════════════════════════════════ */
 .display-hero {
-  font-family: var(--font-fraunces), serif;
-  font-weight: 300;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-  font-size: clamp(44px, 7.4vw, 100px);
-}
-.display-h2 {
-  font-family: var(--font-fraunces), serif;
-  font-weight: 300;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-  font-size: clamp(36px, 6vw, 72px);
-}
-.display-h3 {
-  font-family: var(--font-fraunces), serif;
+  font-family: var(--font-instrument), serif;
   font-weight: 400;
   line-height: 1;
+  letter-spacing: -0.03em;
+  font-size: clamp(34px, 5.5vw, 56px);
+}
+.display-h2 {
+  font-family: var(--font-instrument), serif;
+  font-weight: 400;
+  line-height: 1.02;
   letter-spacing: -0.02em;
-  font-size: clamp(24px, 3.5vw, 36px);
+  font-size: clamp(26px, 3.6vw, 40px);
+}
+.display-h3 {
+  font-family: var(--font-instrument), serif;
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  font-size: clamp(20px, 2.4vw, 28px);
 }
 
-/* Respect reduced motion */
+/* ═══ Table-row offer list ═══════════════════════════════════════════════ */
+.row-hover {
+  transition: background-color 200ms, transform 200ms;
+}
+.row-hover:hover { background: var(--surface); }
+
+/* Skip link — keyboard users jump past the masthead */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.65rem 1rem;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--foreground);
+  background: var(--background);
+  border: 1px solid var(--rule);
+}
+.skip-link:focus {
+  left: max(1rem, env(safe-area-inset-left));
+  top: max(1rem, env(safe-area-inset-top));
+}
+
+/* ═══ Reduced motion ═════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
-  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
   .marquee { animation: none; }
+}
+
+/* ═══ Scrollbar styling for filter rail (lighter paper context) ═════════ */
+@media (min-width: 768px) {
+  * { scrollbar-width: thin; scrollbar-color: var(--rule-2) transparent; }
 }

@@ -4,7 +4,10 @@ import { Container } from "@/components/Container";
 import { isAdmin, getUser } from "@/lib/auth";
 import { signOut } from "@/app/actions/auth";
 
-export const metadata = { title: "Admin — AI Credit Ladder" };
+export const metadata = {
+  title: "Admin",
+  robots: { index: false, follow: false },
+};
 
 export default async function AdminLayout({
   children,
@@ -17,7 +20,7 @@ export default async function AdminLayout({
   if (!admin) redirect("/");
 
   return (
-    <main className="flex-1">
+    <div className="flex flex-1 flex-col">
       <div className="border-b border-[color:var(--rule)] bg-[color:var(--background-2)]">
         <Container className="flex h-12 items-center justify-between">
           <nav className="flex items-center gap-5 text-[12px]">
@@ -57,6 +60,6 @@ export default async function AdminLayout({
         </Container>
       </div>
       {children}
-    </main>
+    </div>
   );
 }

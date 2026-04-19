@@ -1,4 +1,10 @@
 import type { Offer } from "@/lib/types";
+import {
+  creditPathForOffer,
+  creditPathFromSlug,
+  creditPathSlug,
+  type CreditPath,
+} from "@/lib/credit-path";
 
 /**
  * Canonical offer-query helpers. These are intentionally pure — they
@@ -21,6 +27,8 @@ export interface Filters {
   noPartner?: boolean;
   noRegistration?: boolean;
   creditType?: Offer["credit_type"] | null;
+  /** How you get credits — derived path; see `credit-path.ts`. */
+  creditPath?: CreditPath | null;
   stage?: Offer["founder_stage_fit"][number] | null;
   projectType?: string | null;
   maxDifficulty?: number | null;
@@ -38,6 +46,7 @@ export function filterOffers(offers: Offer[], f: Filters): Offer[] {
     if (f.noPartner && o.requires_partner_referral) return false;
     if (f.noRegistration && o.requires_company_registration) return false;
     if (f.creditType && o.credit_type !== f.creditType) return false;
+    if (f.creditPath && creditPathForOffer(o) !== f.creditPath) return false;
     if (f.stage && !o.founder_stage_fit.includes(f.stage)) return false;
     if (f.projectType && !o.project_types.includes(f.projectType)) return false;
     if (
@@ -179,12 +188,14 @@ export function parseSearchParams(
       ? sortRaw
       : "recommended";
 
+  const pathRaw = s("path");
   const filters: Filters = {
     solo: b("solo"),
     noVc: b("noVc"),
     noPartner: b("noPartner"),
     noRegistration: b("noReg"),
     creditType: (s("type") as Offer["credit_type"] | undefined) ?? null,
+    creditPath: creditPathFromSlug(pathRaw),
     stage: (s("stage") as Offer["founder_stage_fit"][number] | undefined) ?? null,
     projectType: s("project") ?? null,
     maxDifficulty: n("maxDiff"),
@@ -202,6 +213,7 @@ export function buildSearchString(filters: Filters, sort: SortKey): string {
   if (filters.noPartner) p.set("noPartner", "1");
   if (filters.noRegistration) p.set("noReg", "1");
   if (filters.creditType) p.set("type", filters.creditType);
+  if (filters.creditPath) p.set("path", creditPathSlug(filters.creditPath));
   if (filters.stage) p.set("stage", filters.stage);
   if (filters.projectType) p.set("project", filters.projectType);
   if (typeof filters.maxDifficulty === "number")
@@ -221,6 +233,7 @@ export function countActiveFilters(f: Filters): number {
   if (f.noPartner) n++;
   if (f.noRegistration) n++;
   if (f.creditType) n++;
+  if (f.creditPath) n++;
   if (f.stage) n++;
   if (f.projectType) n++;
   if (typeof f.maxDifficulty === "number") n++;

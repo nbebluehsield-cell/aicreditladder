@@ -1,9 +1,11 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Button } from "@/components/ui/Button";
 import { signInWithMagicLink } from "@/app/actions/auth";
+import { GA_EVENTS } from "@/lib/analytics-events";
+import { trackGaEvent } from "@/lib/gtag";
+import { Button } from "@/components/ui/Button";
 
 /**
  * Gated apply CTA.
@@ -18,14 +20,29 @@ export function ApplyUnlock({
   authed,
   applyUrl,
   vendor,
+  offerSlug,
+  offerTitle,
 }: {
   authed: boolean;
   applyUrl: string;
   vendor: string;
+  offerSlug: string;
+  offerTitle: string;
 }) {
   const [state, action, pending] = useActionState(signInWithMagicLink, null);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const magicSentTracked = useRef(false);
+
+  useEffect(() => {
+    if (state?.ok !== true || magicSentTracked.current) return;
+    magicSentTracked.current = true;
+    trackGaEvent(GA_EVENTS.OFFER_MAGIC_LINK_SENT, {
+      offer_slug: offerSlug,
+      vendor,
+      offer_title: offerTitle,
+    });
+  }, [state?.ok, offerSlug, vendor, offerTitle]);
 
   if (authed) {
     return (
@@ -33,6 +50,13 @@ export function ApplyUnlock({
         href={applyUrl}
         size="md"
         className="w-full min-h-12 text-[12.5px] sm:min-h-11"
+        onClick={() =>
+          trackGaEvent(GA_EVENTS.OFFER_APPLY_OUTBOUND, {
+            offer_slug: offerSlug,
+            vendor,
+            offer_title: offerTitle,
+          })
+        }
       >
         Apply on {vendor} →
       </Button>
@@ -47,7 +71,14 @@ export function ApplyUnlock({
         <>
           <button
             type="button"
-            onClick={() => setOpen(true)}
+            onClick={() => {
+              trackGaEvent(GA_EVENTS.OFFER_UNLOCK_OPEN, {
+                offer_slug: offerSlug,
+                vendor,
+                offer_title: offerTitle,
+              });
+              setOpen(true);
+            }}
             className="inline-flex w-full min-h-12 items-center justify-center gap-2 rounded-full bg-[color:var(--gold)] px-5 text-[12.5px] font-medium text-black transition hover:brightness-110 active:scale-[0.99] focus-ring sm:min-h-11"
           >
             Unlock apply link <span aria-hidden>→</span>

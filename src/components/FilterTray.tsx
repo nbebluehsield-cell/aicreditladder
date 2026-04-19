@@ -6,6 +6,8 @@ import type { Filters, SortKey } from "@/lib/offers";
 import { buildSearchString, countActiveFilters } from "@/lib/offers";
 import { PROJECT_TYPES } from "@/data/project-types";
 import { cn } from "@/lib/cn";
+import { GA_EVENTS } from "@/lib/analytics-events";
+import { trackGaEvent } from "@/lib/gtag";
 
 /**
  * URL-driven filter/sort UI for /explore.
@@ -67,6 +69,19 @@ export function FilterTray({ filters, sort, total, filtered }: Props) {
       const nextSort = patch.sort ?? sort;
       const nextFilters: Filters = { ...filters, ...patch };
       delete (nextFilters as Record<string, unknown>).sort;
+
+      if (patch.sort !== undefined && patch.sort !== sort) {
+        trackGaEvent(GA_EVENTS.EXPLORE_SORT, { sort_key: patch.sort });
+      }
+      const patchKeys = Object.keys(patch).filter(
+        (k) => k !== "sort" && k !== "search",
+      );
+      if (patchKeys.length > 0) {
+        trackGaEvent(GA_EVENTS.EXPLORE_FILTERS, {
+          filter_keys: patchKeys.slice(0, 12).join(","),
+        });
+      }
+
       const qs = buildSearchString(nextFilters, nextSort);
       router.push(`${pathname}${qs}`, { scroll: false });
     },
@@ -82,6 +97,11 @@ export function FilterTray({ filters, sort, total, filtered }: Props) {
       e.preventDefault();
       const data = new FormData(e.currentTarget);
       const q = String(data.get("q") ?? "").trim();
+      if (q) {
+        trackGaEvent(GA_EVENTS.EXPLORE_SEARCH, {
+          search_term: q.slice(0, 120),
+        });
+      }
       update({ search: q || null });
     },
     [update],

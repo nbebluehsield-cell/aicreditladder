@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import type { Offer } from "@/lib/types";
 import { VendorMark } from "@/components/VendorMark";
 import { formatAmount } from "@/lib/formatAmount";
 import { freshness } from "@/lib/freshness";
+import { GA_EVENTS } from "@/lib/analytics-events";
+import { trackGaEvent } from "@/lib/gtag";
 
 /** Hex logo 48px + gap-4 (16px) — aligns stacked value row with title on mobile */
 const MOBILE_VALUE_INDENT = "max-sm:pl-[64px]";
@@ -55,6 +59,14 @@ export function OfferCard({
         prefetch
         aria-label={`${offer.title} — details`}
         className="absolute inset-0 z-10"
+        onClick={() =>
+          trackGaEvent(GA_EVENTS.OFFER_CARD_CLICK, {
+            offer_slug: offer.slug,
+            vendor: offer.vendor,
+            offer_title: offer.title,
+            list_index: index,
+          })
+        }
       />
       <div className="pointer-events-none relative z-0 flex flex-col gap-4 px-4 py-5 sm:flex-row sm:items-stretch sm:gap-6 sm:px-7 sm:py-5 lg:gap-8 lg:px-10">
         <div className="flex min-h-[48px] items-start gap-4 sm:min-h-0 sm:min-w-0 sm:flex-1 sm:items-center">

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Container } from "@/components/Container";
 import { VendorMark } from "@/components/VendorMark";
 import { ApplyUnlock } from "@/components/ApplyUnlock";
+import { OfferEngagementTracker } from "@/components/analytics/OfferEngagementTracker";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { getOffers, getOfferBySlug } from "@/lib/offers-source";
 import { isAuthenticated } from "@/lib/auth";
@@ -81,6 +82,11 @@ export default async function OfferPage({ params }: { params: Promise<Params> })
 
   return (
     <div className="flex flex-1 flex-col">
+      <OfferEngagementTracker
+        offerSlug={publicOffer.slug}
+        vendor={publicOffer.vendor}
+        offerTitle={publicOffer.title}
+      />
       <OfferJsonLd offer={publicOffer} />
       <Container
         size="wide"
@@ -159,6 +165,8 @@ export default async function OfferPage({ params }: { params: Promise<Params> })
                 authed={authed}
                 applyUrl={publicOffer.application_url}
                 vendor={publicOffer.vendor}
+                offerSlug={publicOffer.slug}
+                offerTitle={publicOffer.title}
               />
               <FreshnessNote offer={publicOffer} className="mt-4" />
             </div>
@@ -358,6 +366,8 @@ export default async function OfferPage({ params }: { params: Promise<Params> })
                 authed={authed}
                 applyUrl={publicOffer.application_url}
                 vendor={publicOffer.vendor}
+                offerSlug={publicOffer.slug}
+                offerTitle={publicOffer.title}
               />
               <FreshnessNote offer={publicOffer} className="mt-4" />
             </div>

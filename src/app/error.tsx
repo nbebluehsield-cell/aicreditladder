@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
+import { Button } from "@/components/ui/Button";
 
 export default function Error({
   error,
@@ -25,20 +26,21 @@ export default function Error({
       <p className="mt-4 max-w-md text-[14px] leading-relaxed text-[color:var(--foreground-dim)]">
         {error.digest ? `Ref: ${error.digest}` : "Try again or head home."}
       </p>
-      <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-        <button
+      <div className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+        <Button
           type="button"
+          variant="default"
+          size="md"
+          className="mono uppercase tracking-[0.14em]"
           onClick={() => reset()}
-          className="mono rounded-lg border border-[color:var(--gold)] px-5 py-2.5 text-[11px] uppercase tracking-[0.18em] text-[color:var(--gold)] transition hover:bg-[color:var(--gold-soft)]"
         >
           Retry
-        </button>
-        <Link
-          href="/"
-          className="text-[14px] text-[color:var(--muted)] underline-offset-4 hover:text-[color:var(--foreground)] hover:underline"
-        >
-          Home
-        </Link>
+        </Button>
+        <Button variant="outline" size="md" className="normal-case" asChild>
+          <Link href="/" prefetch>
+            Home
+          </Link>
+        </Button>
       </div>
     </div>
   );

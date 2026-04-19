@@ -23,6 +23,8 @@ export const GA_EVENTS = {
   EXPLORE_SORT: "explore_sort",
   /** Explore: any filter chip / facet toggled (not sort/search). */
   EXPLORE_FILTERS: "explore_filters",
+  /** Explore: copied full URL (filters + sort) to clipboard. */
+  EXPLORE_COPY_VIEW: "explore_copy_view",
 } as const;
 
 export type OfferEventContext = {

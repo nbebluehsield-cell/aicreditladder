@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Fragment } from "react";
+import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/Container";
 import { OfferCard } from "@/components/OfferCard";
 import { FilterTray } from "@/components/FilterTray";
@@ -94,15 +95,15 @@ function EmptyState() {
         Nothing fits those filters.
       </p>
       <p className="mt-3 max-w-md text-[14px] text-[color:var(--muted)] mx-auto">
-        Try relaxing one constraint — or{" "}
-        <Link
-          href="/explore"
-          className="editorial-link text-[color:var(--gold)]"
-        >
-          clear all filters
-        </Link>
-        .
+        Try relaxing one constraint — or reset the index to start fresh.
       </p>
+      <div className="mt-8 flex justify-center">
+        <Button variant="outline" size="md" className="normal-case" asChild>
+          <Link href="/explore" prefetch>
+            Clear all filters
+          </Link>
+        </Button>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Filters, SortKey } from "@/lib/offers";
 import { buildSearchString, countActiveFilters } from "@/lib/offers";
 import { PROJECT_TYPES } from "@/data/project-types";
@@ -61,6 +61,14 @@ export function FilterTray({ filters, sort, total, filtered }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [copyFeedback, setCopyFeedback] = useState(false);
+  const copyReset = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (copyReset.current) clearTimeout(copyReset.current);
+    };
+  }, []);
 
   const activeCount = useMemo(() => countActiveFilters(filters), [filters]);
 
@@ -91,6 +99,24 @@ export function FilterTray({ filters, sort, total, filtered }: Props) {
   const reset = useCallback(() => {
     router.push(pathname, { scroll: false });
   }, [router, pathname]);
+
+  const copyViewUrl = useCallback(async () => {
+    if (typeof window === "undefined") return;
+    const qs = searchParams.toString();
+    const url = `${window.location.origin}${pathname}${qs ? `?${qs}` : ""}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      trackGaEvent(GA_EVENTS.EXPLORE_COPY_VIEW, {
+        has_active_filters: activeCount > 0 ? 1 : 0,
+        query_len: qs.length,
+      });
+      setCopyFeedback(true);
+      if (copyReset.current) clearTimeout(copyReset.current);
+      copyReset.current = setTimeout(() => setCopyFeedback(false), 2000);
+    } catch {
+      /* clipboard denied or unavailable */
+    }
+  }, [pathname, searchParams, activeCount]);
 
   const onSearch = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -228,6 +254,32 @@ export function FilterTray({ filters, sort, total, filtered }: Props) {
               </span>
             )}
           </button>
+
+          <button
+            type="button"
+            onClick={() => void copyViewUrl()}
+            className={cn(
+              "mono inline-flex h-9 shrink-0 items-center justify-center rounded-full border px-2.5 text-[10px] uppercase tracking-[0.14em] transition focus-ring sm:h-10 sm:px-3.5 sm:text-[11px]",
+              copyFeedback
+                ? "border-[color:var(--teal)]/50 text-[color:var(--teal)]"
+                : "border-[color:var(--rule-2)] text-[color:var(--foreground-dim)] hover:border-[color:var(--gold)]/45 hover:text-[color:var(--foreground)]",
+            )}
+            title="Copy link to this filtered view"
+          >
+            <span className="hidden min-[380px]:inline">
+              {copyFeedback ? "Copied" : "Copy view"}
+            </span>
+            <span className="min-[380px]:hidden" aria-hidden>
+              {copyFeedback ? "✓" : "⎘"}
+            </span>
+          </button>
+          <span
+            role="status"
+            aria-live="polite"
+            className="sr-only"
+          >
+            {copyFeedback ? "Link copied to clipboard" : ""}
+          </span>
 
           <span className="hidden shrink-0 text-[12px] text-[color:var(--muted)] md:inline">
             <span className="num text-[color:var(--foreground)]">{filtered}</span>

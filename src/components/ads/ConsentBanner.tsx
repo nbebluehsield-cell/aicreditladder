@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CONSENT_COOKIE } from "@/lib/ads";
+import { Button } from "@/components/ui/Button";
 
 /**
  * Read/write the consent cookie (client only). We intentionally keep
@@ -76,16 +77,18 @@ export function ConsentBanner() {
           >
             Decline
           </button>
-          <button
+          <Button
             type="button"
+            variant="default"
+            size="sm"
+            className="mono uppercase tracking-[0.08em]"
             onClick={() => {
               writeConsent("yes");
               setState("yes");
             }}
-            className="cta-primary-fill focus-ring h-10 rounded-md px-5 text-[11px] font-semibold uppercase tracking-[0.08em] text-[color:var(--background)]"
           >
             Accept
-          </button>
+          </Button>
         </div>
       </div>
     </div>

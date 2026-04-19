@@ -95,6 +95,9 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "./",
+    types: {
+      "text/plain": "/llms.txt",
+    },
   },
   icons: {
     icon: [{ url: "/icon", type: "image/png", sizes: "32x32" }],

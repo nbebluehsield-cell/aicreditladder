@@ -4,17 +4,11 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { NEWSLETTER_CONSENT_TEXT } from "@/lib/consent";
+import { SITE_URL } from "@/lib/site-url";
 
 type ActionState =
   | { ok: true; message: string }
   | { ok: false; error: string };
-
-function siteUrl(): string {
-  return (
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-    "http://localhost:3000"
-  );
-}
 
 /**
  * Sends a magic-link email. If `subscribeToNewsletter` is true we
@@ -44,7 +38,7 @@ export async function signInWithMagicLink(
   const { error } = await supabase.auth.signInWithOtp({
     email,
     options: {
-      emailRedirectTo: `${siteUrl()}/auth/callback`,
+      emailRedirectTo: `${SITE_URL}/auth/callback`,
     },
   });
   if (error) return { ok: false, error: error.message };

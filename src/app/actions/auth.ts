@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { NEWSLETTER_CONSENT_TEXT } from "@/lib/consent";
+import { safeInternalPath } from "@/lib/safe-path";
 import { SITE_URL } from "@/lib/site-url";
 
 type ActionState =
@@ -35,10 +36,14 @@ export async function signInWithMagicLink(
 
   const supabase = await createClient();
 
+  const nextPath = safeInternalPath(String(formData.get("next") ?? ""));
+  const callback = new URL(`${SITE_URL}/auth/callback`);
+  callback.searchParams.set("next", nextPath);
+
   const { error } = await supabase.auth.signInWithOtp({
     email,
     options: {
-      emailRedirectTo: `${SITE_URL}/auth/callback`,
+      emailRedirectTo: callback.toString(),
     },
   });
   if (error) return { ok: false, error: error.message };

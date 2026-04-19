@@ -11,7 +11,12 @@ import { NEWSLETTER_CONSENT_TEXT } from "@/lib/consent";
  * is client-side only for the `useActionState` UX (inline success /
  * error states without a page reload).
  */
-export function MagicLinkForm() {
+export function MagicLinkForm({
+  nextPath = "/explore",
+}: {
+  /** Where to send the user after they tap the email link (internal path only). */
+  nextPath?: string;
+}) {
   const [state, action, pending] = useActionState(signInWithMagicLink, null);
 
   return (
@@ -19,6 +24,7 @@ export function MagicLinkForm() {
       action={action}
       className="mt-12 flex w-full flex-col items-center gap-5 text-center"
     >
+      <input type="hidden" name="next" value={nextPath} />
       <div className="w-full">
         <label htmlFor="email" className="eyebrow mb-2 block text-center">
           Email

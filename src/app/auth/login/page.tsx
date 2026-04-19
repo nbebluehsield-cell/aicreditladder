@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { Container } from "@/components/Container";
 import { MagicLinkForm } from "@/components/MagicLinkForm";
 import { getUser } from "@/lib/auth";
+import { safeInternalPath } from "@/lib/safe-path";
 
 export const metadata = {
   title: "Sign in",
@@ -10,9 +11,17 @@ export const metadata = {
   robots: { index: false, follow: true },
 };
 
-export default async function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ next?: string | string[] }>;
+}) {
   const user = await getUser();
   if (user) redirect("/explore");
+
+  const sp = await searchParams;
+  const rawNext = Array.isArray(sp.next) ? sp.next[0] : sp.next;
+  const nextPath = safeInternalPath(rawNext);
 
   return (
     <div className="auth-signin-shell">
@@ -30,7 +39,7 @@ export default async function LoginPage() {
           documents needed, common rejection reasons, and the weekly digest.
         </p>
 
-        <MagicLinkForm />
+        <MagicLinkForm nextPath={nextPath} />
       </Container>
     </div>
   );

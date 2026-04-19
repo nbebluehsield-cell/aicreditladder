@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { signInWithMagicLink } from "@/app/actions/auth";
 
@@ -9,11 +10,9 @@ import { signInWithMagicLink } from "@/app/actions/auth";
  *
  * Authed reader → direct outbound claim button.
  *
- * Anonymous reader → "Unlock apply link" primary button. Clicking expands
- * an inline email row that triggers the magic-link flow AND reveals the
- * claim button in the same view — one decision, one-click send, zero
- * friction to the actual claim. The magic link is the sign-up rail,
- * not a speed bump.
+ * Anonymous reader → expand email, send Supabase magic link only. The
+ * outbound apply button appears only after `authed` is true (session from
+ * the email link). `next` is sent so the callback returns to this offer.
  */
 export function ApplyUnlock({
   authed,
@@ -26,6 +25,7 @@ export function ApplyUnlock({
 }) {
   const [state, action, pending] = useActionState(signInWithMagicLink, null);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   if (authed) {
     return (
@@ -61,6 +61,7 @@ export function ApplyUnlock({
 
       {open && !sent && (
         <form action={action} className="flex flex-col gap-2.5">
+          <input type="hidden" name="next" value={pathname} />
           <label htmlFor="unlock-email" className="sr-only">
             Email
           </label>
@@ -98,24 +99,16 @@ export function ApplyUnlock({
       )}
 
       {sent && (
-        <>
-          <p
-            role="status"
-            className="mono rounded-md border border-[color:var(--teal)] bg-[color:var(--teal-soft)] p-3 text-[11.5px] leading-[1.55] text-[color:var(--teal)]"
-          >
-            {state.message} <br />
-            <span className="text-[color:var(--foreground-dim)]">
-              Claim now — we&rsquo;ll remember you when you come back.
-            </span>
-          </p>
-          <Button
-            href={applyUrl}
-            size="md"
-            className="w-full min-h-12 text-[12.5px] sm:min-h-11"
-          >
-            Apply on {vendor} →
-          </Button>
-        </>
+        <p
+          role="status"
+          className="mono rounded-md border border-[color:var(--teal)] bg-[color:var(--teal-soft)] p-3 text-[11.5px] leading-[1.55] text-[color:var(--teal)]"
+        >
+          {state.message}{" "}
+          <span className="text-[color:var(--foreground-dim)]">
+            Open that email and tap the sign-in link. After you sign in,
+            you&rsquo;ll land back here — then the apply button appears.
+          </span>
+        </p>
       )}
     </div>
   );
